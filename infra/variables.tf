@@ -22,3 +22,12 @@ variable "create_dmarc_record" {
   type    = bool
   default = true # set false if your domain already has a DMARC record
 }
+
+variable "alert_email" {
+  type = string
+}
+
+variable "monthly_budget_usd" {
+  type    = number
+  default = 5
+}
