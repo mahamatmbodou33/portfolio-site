@@ -182,7 +182,7 @@ resource "aws_cloudfront_distribution" "site" {
     }
   }
 
-    origin {
+  origin {
     origin_id   = "contact-api"
     domain_name = replace(aws_apigatewayv2_api.contact.api_endpoint, "https://", "")
     custom_origin_config {
@@ -268,7 +268,7 @@ resource "aws_s3_bucket_policy" "site" {
 # A and AAAA alias records for the apex and www
 resource "aws_route53_record" "site" {
   for_each = { for pair in setproduct(local.aliases, ["A", "AAAA"]) :
-    "${pair[0]}-${pair[1]}" => { name = pair[0], type = pair[1] } }
+  "${pair[0]}-${pair[1]}" => { name = pair[0], type = pair[1] } }
 
   zone_id = data.aws_route53_zone.this.zone_id
   name    = each.value.name

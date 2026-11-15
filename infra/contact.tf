@@ -131,7 +131,7 @@ resource "aws_apigatewayv2_stage" "default" {
     destination_arn = aws_cloudwatch_log_group.contact_api.arn
     format = jsonencode({
       requestId = "$context.requestId", ip = "$context.identity.sourceIp"
-      route = "$context.routeKey", status = "$context.status"
+      route     = "$context.routeKey", status = "$context.status"
     })
   }
 }

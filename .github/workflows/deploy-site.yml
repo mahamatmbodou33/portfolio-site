@@ -1,0 +1,57 @@
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", ".github/workflows/deploy-site.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-site
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Point the contact form at the live API
+        run: |
+          echo 'window.SITE_CONFIG = { contactEndpoint: "/api/contact" };' > site/assets/config.js
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Upload assets (cached for a day)
+        run: >
+          aws s3 sync site/ "s3://${{ vars.SITE_BUCKET }}" --delete
+          --exclude "*.html" --exclude "assets/config.js"
+          --cache-control "public, max-age=86400"
+
+      - name: Upload pages (always revalidated)
+        run: >
+          aws s3 sync site/ "s3://${{ vars.SITE_BUCKET }}"
+          --exclude "*" --include "*.html" --include "assets/config.js"
+          --cache-control "no-cache"
+
+      - name: Clear the CloudFront cache
+        run: |
+          id=$(aws cloudfront create-invalidation \
+            --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --paths "/*" --query 'Invalidation.Id' --output text)
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" --id "$id"
+
+      - name: Smoke test the live site
+        run: |
+          headers=$(curl -fsSI "https://${{ vars.SITE_DOMAIN }}/")
+          echo "$headers" | grep -qi '^strict-transport-security:' || { echo "HSTS missing"; exit 1; }
+          echo "$headers" | grep -qi '^content-security-policy:' || { echo "CSP missing"; exit 1; }
+          curl -fsS "https://${{ vars.SITE_DOMAIN }}/" | grep -q 'Mbodou' || { echo "page content missing"; exit 1; }

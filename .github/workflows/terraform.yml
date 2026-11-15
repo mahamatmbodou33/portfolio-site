@@ -1,0 +1,76 @@
+name: Terraform
+
+on:
+  pull_request:
+    paths: ["infra/**", ".github/workflows/terraform.yml"]
+  push:
+    branches: [main]
+    paths: ["infra/**", ".github/workflows/terraform.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # lets the job ask GitHub for an OIDC token
+
+concurrency:
+  group: terraform-${{ github.ref }}
+  cancel-in-progress: false # never interrupt a running apply
+
+env:
+  TF_IN_AUTOMATION: "true"
+  TF_VAR_domain_name: ${{ vars.SITE_DOMAIN }}
+  TF_VAR_alert_email: ${{ vars.ALERT_EMAIL }}
+  TF_VAR_contact_recipient_email: ${{ vars.CONTACT_RECIPIENT_EMAIL }}
+  TF_VAR_github_repo: ${{ github.repository }}
+  TF_VAR_state_bucket_name: ${{ vars.TF_STATE_BUCKET }}
+  TF_VAR_create_github_oidc_provider: ${{ vars.CREATE_GITHUB_OIDC_PROVIDER }}
+
+defaults:
+  run:
+    working-directory: infra
+
+jobs:
+  plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform fmt -check -recursive
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_TF_PLAN_ROLE_ARN }}
+          aws-region: us-east-1
+      - name: Init
+        run: >
+          terraform init -input=false
+          -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}"
+          -backend-config="key=portfolio/site.tfstate"
+          -backend-config="region=us-east-1"
+          -backend-config="use_lockfile=true"
+      - run: terraform validate
+      - run: terraform plan -input=false -no-color -out=tfplan
+      - name: Show the plan in the job summary
+        run: |
+          { echo '```'; terraform show -no-color tfplan | tail -n 200; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+  apply:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: production # waits here for your approval
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_TF_APPLY_ROLE_ARN }}
+          aws-region: us-east-1
+      - name: Init
+        run: >
+          terraform init -input=false
+          -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}"
+          -backend-config="key=portfolio/site.tfstate"
+          -backend-config="region=us-east-1"
+          -backend-config="use_lockfile=true"
+      - run: terraform plan -input=false -no-color -out=tfplan
+      - run: terraform apply -input=false -no-color tfplan

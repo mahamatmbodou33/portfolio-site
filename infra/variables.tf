@@ -31,3 +31,17 @@ variable "monthly_budget_usd" {
   type    = number
   default = 5
 }
+
+variable "github_repo" {
+  description = "owner/name, e.g. mahamatmbodou33/portfolio-site"
+  type        = string
+}
+
+variable "state_bucket_name" {
+  type = string # from Phase 2
+}
+
+variable "create_github_oidc_provider" {
+  type    = bool
+  default = true # false if your account already has one (e.g. from your three-tier project)
+}
