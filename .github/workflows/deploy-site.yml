@@ -23,6 +23,12 @@ jobs:
       - name: Point the contact form at the live API
         run: |
           echo 'window.SITE_CONFIG = { contactEndpoint: "/api/contact" };' > site/assets/config.js
+      - name: Debug - show OIDC token claims
+        run: |
+          TOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
+          echo "$TOKEN" | cut -d. -f2 | python3 -c "import sys,base64,json; p=sys.stdin.read().strip(); p+='='*(-len(p)%4); c=json.loads(base64.urlsafe_b64decode(p)); print(json.dumps({k:c.get(k) for k in ['sub','aud','ref','environment','repository']}, indent=2))"
+
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
