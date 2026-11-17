@@ -1,5 +1,9 @@
 locals {
   oidc_host = "token.actions.githubusercontent.com"
+  gh_owner  = split("/", var.github_repo)[0]
+  gh_name   = split("/", var.github_repo)[1]
+  # GitHub's immutable subject format: repo:owner@ID/name@ID
+  sub_prefix = "repo:${local.gh_owner}@${var.github_owner_id}/${local.gh_name}@${var.github_repo_id}"
 }
 
 resource "aws_iam_openid_connect_provider" "github" {
@@ -19,9 +23,9 @@ locals {
 
 data "aws_iam_policy_document" "github_trust" {
   for_each = {
-    deploy = "repo:${var.github_repo}:ref:refs/heads/main"
-    plan   = "repo:${var.github_repo}:pull_request"
-    apply  = "repo:${var.github_repo}:environment:production"
+    deploy = "${local.sub_prefix}:ref:refs/heads/main"
+    plan   = "${local.sub_prefix}:pull_request"
+    apply  = "${local.sub_prefix}:environment:production"
   }
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]

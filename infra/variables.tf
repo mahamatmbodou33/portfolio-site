@@ -45,3 +45,13 @@ variable "create_github_oidc_provider" {
   type    = bool
   default = true # false if your account already has one (e.g. from your three-tier project)
 }
+
+variable "github_owner_id" {
+  description = "Numeric GitHub owner ID (part of the OIDC subject)"
+  type        = string
+}
+
+variable "github_repo_id" {
+  description = "Numeric GitHub repository ID (part of the OIDC subject)"
+  type        = string
+}
