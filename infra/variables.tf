@@ -29,7 +29,7 @@ variable "alert_email" {
 
 variable "monthly_budget_usd" {
   type    = number
-  default = 5
+  default = 6
 }
 
 variable "github_repo" {
