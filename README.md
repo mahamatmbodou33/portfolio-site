@@ -175,7 +175,7 @@ registered in Route 53.
 
 <div align="center">
 
-Built by **Mahamat (Bodu) Mbodou** · AWS Certified Solutions Architect – Associate
+Built by **Mahamat Mbodou** · AWS Certified Solutions Architect – Associate
 
 [mbodou.org](https://mbodou.org) · [GitHub](https://github.com/mahamatmbodou33)
 

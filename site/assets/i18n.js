@@ -53,7 +53,7 @@ window.I18N_FR = {
   ]
  ],
  "title": {
-  "index": "Mahamat (Bodu) Mbodou · Ingénieur Cloud AWS & DevOps",
+  "index": "Mahamat Mbodou · Ingénieur Cloud AWS & DevOps",
   "404": "Page introuvable · Mahamat Mbodou"
  },
  "description": "Solutions Architect certifié AWS à Jersey City (NJ). Je construis une infrastructure AWS sécurisée et automatisée avec Terraform, Docker et GitHub Actions. Ouvert aux postes DevOps junior et aux missions freelance.",
@@ -93,7 +93,7 @@ window.I18N_FR = {
   "t9b9d9134": "Bonjour, je suis",
   "t79f864b4": "Certifié AWS ·",
   "t83a1523d": "Je construis une infrastructure cloud sécurisée et automatisée avec <strong>Terraform</strong>, <strong>Docker</strong> et <strong>GitHub Actions</strong>.",
-  "tbf713655": "Je m'appelle Bodu, Solutions Architect – Associate certifié, basé à Jersey City (New Jersey). Je conçois des environnements AWS en code, je les déploie via CI/CD et j'ajoute la supervision qui vous alerte quand quelque chose tombe en panne.",
+  "tbf713655": "Je m'appelle Mbodou, Solutions Architect – Associate certifié, basé à Jersey City (New Jersey). Je conçois des environnements AWS en code, je les déploie via CI/CD et j'ajoute la supervision qui vous alerte quand quelque chose tombe en panne.",
   "teeab5301": "Voir mes projets",
   "td83773ac": "certifications AWS",
   "t70f3dcfe": "modules Terraform réutilisables",
