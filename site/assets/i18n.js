@@ -97,7 +97,7 @@ window.I18N_FR = {
   "teeab5301": "Voir mes projets",
   "td83773ac": "certifications AWS",
   "t70f3dcfe": "modules Terraform réutilisables",
-  "ta399ce38": "zones de disponibilité par déploiement",
+  "ta399ce38": "projets sur GitHub",
   "tc38943e0": "Qui je suis",
   "tcb078ec7": "À <span class=\"grad-text\">propos</span>",
   "t11fdef70": "J'ai étudié les systèmes d'information au Borough of Manhattan Community College, puis je me suis spécialisé sur AWS : deux certifications et une série de projets que j'ai construits, cassés volontairement, puis réparés.",
