@@ -102,7 +102,7 @@ window.I18N_FR = {
   "tcb078ec7": "À <span class=\"grad-text\">propos</span>",
   "t11fdef70": "J'ai étudié les systèmes d'information au Borough of Manhattan Community College, puis je me suis spécialisé sur AWS : deux certifications et une série de projets que j'ai construits, cassés volontairement, puis réparés.",
   "tef3aa611": "Avant le cloud, j'ai aidé à gérer le magasin familial : stocks, réapprovisionnement et clientèle. J'y ai appris à faire tourner les choses au quotidien, à expliquer les problèmes simplement et à aller au bout de ce que je commence. J'applique les mêmes habitudes à l'infrastructure.",
-  "t18342cd4": "En ce moment, je déploie une application de microservices Kubernetes sur Amazon EKS et je réalise des missions AWS en freelance, tout en recherchant un poste d'ingénieur DevOps ou Cloud junior dans la région de New York ou en télétravail.",
+  "t18342cd4": "En ce moment, je déploie une application de microservices Kubernetes sur Amazon EKS et je suis disponible pour des missions AWS en freelance, tout en recherchant un poste d'ingénieur DevOps ou Cloud junior dans la région de New York ou en télétravail.",
   "taaf87fe5": "Formation",
   "t7751fe97": "A.S. Systèmes d'information<br><span class=\"muted\">Borough of Manhattan Community College · 2024</span>",
   "tb65e36f7": "Certifications",
