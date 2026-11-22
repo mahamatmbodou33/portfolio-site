@@ -1,10 +1,10 @@
 <div align="center">
 
-# mbodou.org
+# mbodou.com
 
 **A production-grade personal website on AWS, built entirely with Terraform and shipped through approval-gated CI/CD.**
 
-[![Live site](https://img.shields.io/badge/live-mbodou.org-4F46E5?style=flat-square)](https://mbodou.org)
+[![Live site](https://img.shields.io/badge/live-mbodou.com-4F46E5?style=flat-square)](https://mbodou.com)
 [![Deploy site](https://github.com/mahamatmbodou33/portfolio-site/actions/workflows/deploy-site.yml/badge.svg)](https://github.com/mahamatmbodou33/portfolio-site/actions/workflows/deploy-site.yml)
 [![Terraform](https://github.com/mahamatmbodou33/portfolio-site/actions/workflows/terraform.yml/badge.svg)](https://github.com/mahamatmbodou33/portfolio-site/actions/workflows/terraform.yml)
 
@@ -64,11 +64,11 @@ Every response carries these headers, set at the edge by a CloudFront response h
 | `Referrer-Policy` | leaking full URLs to other sites |
 | `Permissions-Policy` | unused browser features (camera, microphone, location, payment) |
 
-- TLS 1.2+ only, HTTP/2 and HTTP/3. `http://` and `www.` redirect to `https://mbodou.org`.
+- TLS 1.2+ only, HTTP/2 and HTTP/3. `http://` and `www.` redirect to `https://mbodou.com`.
 - The contact form API is reached only through CloudFront on the same domain, so no CORS is needed.
 - The Lambda validates and size-limits input, strips characters that could inject email headers,
   silently drops bot submissions caught by a honeypot field, and runs with least-privilege IAM:
-  it can only write its own logs and send email from `noreply@mbodou.org`.
+  it can only write its own logs and send email from `noreply@mbodou.com`.
 - API Gateway throttles the contact endpoint to 2 requests per second (burst 5).
 
 ## CI/CD
@@ -105,8 +105,8 @@ Log groups keep 30 days of logs. Lambda runs on arm64 at 128 MB.
 <!-- Add your desktop Performance score and SSL Labs grade if you want them listed. -->
 | Check | Score |
 | --- | --- |
-| [securityheaders.com](https://securityheaders.com/?q=mbodou.org&followRedirects=on) | **A+** |
-| [PageSpeed Insights](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fmbodou.org) | Accessibility **96** · Best Practices **100** · SEO **100** |
+| [securityheaders.com](https://securityheaders.com/?q=mbodou.com&followRedirects=on) | **A+** |
+| [PageSpeed Insights](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fmbodou.com) | Accessibility **96** · Best Practices **100** · SEO **100** |
 
 <details>
 <summary>Screenshots</summary>
@@ -177,6 +177,6 @@ registered in Route 53.
 
 Built by **Mahamat Mbodou** · AWS Certified Solutions Architect – Associate
 
-[mbodou.org](https://mbodou.org) · [GitHub](https://github.com/mahamatmbodou33)
+[mbodou.com](https://mbodou.com) · [GitHub](https://github.com/mahamatmbodou33)
 
 </div>

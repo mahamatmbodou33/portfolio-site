@@ -10,7 +10,7 @@
 
   <!-- canvas -->
   <rect x="0.5" y="0.5" width="1199" height="719" rx="16" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <text x="40" y="50" font-size="22" font-weight="700" fill="#0F172A">mbodou.org · architecture</text>
+  <text x="40" y="50" font-size="22" font-weight="700" fill="#0F172A">mbodou.com · architecture</text>
   <text x="40" y="74" font-size="14" fill="#64748B">Private S3 origin behind CloudFront, serverless contact form, OIDC-based CI/CD. All infrastructure in Terraform.</text>
 
   <!-- AWS boundary -->
