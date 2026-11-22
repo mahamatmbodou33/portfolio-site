@@ -326,3 +326,11 @@ moved {
   from = aws_route53_record.site["www.mbodou.org-AAAA"]
   to   = aws_route53_record.redirect["www.mbodou.org-AAAA"]
 }
+
+resource "aws_route53_record" "google_verification" {
+  zone_id = data.aws_route53_zone.this.zone_id
+  name    = var.domain_name
+  type    = "TXT"
+  ttl     = 300
+  records = ["google-site-verification=GOVny3Ncr9Ixh7pF3qTQ-Gj9IzPZpag9KvwfJIpkoKY"]
+}
