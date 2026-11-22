@@ -1,6 +1,21 @@
 locals {
-  www_domain = "www.${var.domain_name}"
-  aliases    = var.include_www ? [var.domain_name, local.www_domain] : [var.domain_name]
+  www_domain       = "www.${var.domain_name}"
+  aliases          = var.include_www ? [var.domain_name, local.www_domain] : [var.domain_name]
+  redirect_aliases = flatten([for d in var.redirect_domains : [d, "www.${d}"]])
+  all_aliases      = concat(local.aliases, local.redirect_aliases)
+
+  # which hosted zone each name lives in
+  zone_for = merge(
+    { for n in local.aliases : n => data.aws_route53_zone.this.zone_id },
+    { for d in var.redirect_domains : d => data.aws_route53_zone.redirect[d].zone_id },
+    { for d in var.redirect_domains : "www.${d}" => data.aws_route53_zone.redirect[d].zone_id },
+  )
+}
+
+data "aws_route53_zone" "redirect" {
+  for_each     = toset(var.redirect_domains)
+  name         = each.value
+  private_zone = false
 }
 
 data "aws_route53_zone" "this" {
@@ -52,7 +67,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "site" {
 
 resource "aws_acm_certificate" "site" {
   domain_name               = var.domain_name
-  subject_alternative_names = var.include_www ? [local.www_domain] : []
+  subject_alternative_names = concat(var.include_www ? [local.www_domain] : [], local.redirect_aliases)
   validation_method         = "DNS"
   lifecycle { create_before_destroy = true }
 }
@@ -65,7 +80,7 @@ resource "aws_route53_record" "cert_validation" {
       record = dvo.resource_record_value
     }
   }
-  zone_id         = data.aws_route53_zone.this.zone_id
+  zone_id         = local.zone_for[each.key]
   name            = each.value.name
   type            = each.value.type
   records         = [each.value.record]
@@ -104,7 +119,7 @@ resource "aws_cloudfront_function" "redirect" {
     function handler(event) {
       var request = event.request;
       var host = request.headers.host && request.headers.host.value;
-      if (host && host.indexOf("www.") === 0) {
+      if (host && host !== "${var.domain_name}") {
         return {
           statusCode: 301,
           statusDescription: "Moved Permanently",
@@ -158,7 +173,7 @@ resource "aws_cloudfront_distribution" "site" {
   is_ipv6_enabled     = true
   http_version        = "http2and3"
   default_root_object = "index.html"
-  aliases             = local.aliases
+  aliases             = local.all_aliases
   price_class         = "PriceClass_100" # North America + Europe edges, cheapest
 
   origin {
@@ -278,4 +293,36 @@ resource "aws_route53_record" "site" {
     zone_id                = aws_cloudfront_distribution.site.hosted_zone_id
     evaluate_target_health = false
   }
+}
+
+resource "aws_route53_record" "redirect" {
+  for_each = { for pair in setproduct(local.redirect_aliases, ["A", "AAAA"]) :
+  "${pair[0]}-${pair[1]}" => { name = pair[0], type = pair[1] } }
+
+  zone_id = local.zone_for[each.value.name]
+  name    = each.value.name
+  type    = each.value.type
+  alias {
+    name                   = aws_cloudfront_distribution.site.domain_name
+    zone_id                = aws_cloudfront_distribution.site.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+# The mbodou.org records used to be the main site records; now they're the redirect records.
+moved {
+  from = aws_route53_record.site["mbodou.org-A"]
+  to   = aws_route53_record.redirect["mbodou.org-A"]
+}
+moved {
+  from = aws_route53_record.site["mbodou.org-AAAA"]
+  to   = aws_route53_record.redirect["mbodou.org-AAAA"]
+}
+moved {
+  from = aws_route53_record.site["www.mbodou.org-A"]
+  to   = aws_route53_record.redirect["www.mbodou.org-A"]
+}
+moved {
+  from = aws_route53_record.site["www.mbodou.org-AAAA"]
+  to   = aws_route53_record.redirect["www.mbodou.org-AAAA"]
 }

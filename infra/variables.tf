@@ -55,3 +55,9 @@ variable "github_repo_id" {
   description = "Numeric GitHub repository ID (part of the OIDC subject)"
   type        = string
 }
+
+variable "redirect_domains" {
+  description = "Extra domains that 301-redirect to domain_name"
+  type        = list(string)
+  default     = ["mbodou.org"]
+}
