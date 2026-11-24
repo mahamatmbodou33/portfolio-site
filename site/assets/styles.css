@@ -338,3 +338,18 @@ a.c-card__v:hover { color: var(--a1); }
 .lang-btn:hover { border-color: var(--a1); }
 .lang-btn__opt { display: grid; place-items: center; height: 100%; padding: 0 9px; border-radius: 8px; transition: background .2s ease, color .2s ease; }
 :root:not([lang="fr"]) .lang-btn__opt[data-lang="en"], :root[lang="fr"] .lang-btn__opt[data-lang="fr"] { background: var(--grad); color: var(--on-accent); }
+
+/* Longer name: hide the logo text on small phones, switch to the menu button earlier */
+@media (max-width: 460px) { .logo__text { display: none; } }
+@media (max-width: 1400px) {
+  .nav__menu { display: grid; }
+  .nav__links { position: absolute; top: var(--nav-h); left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 2px;
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) 18px max(16px, env(safe-area-inset-left, 0px));
+    background: var(--bg-2); border-bottom: 1px solid var(--border); display: none; }
+  .nav__links.is-open { display: flex; }
+  .nav__links a { padding: 13px 12px; font-size: 1rem; }
+}
+
+
+
+
