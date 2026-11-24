@@ -53,8 +53,8 @@ window.I18N_FR = {
   ]
  ],
  "title": {
-  "index": "Mahamat Mbodou · Ingénieur Cloud AWS & DevOps",
-  "404": "Page introuvable · Mahamat Mbodou"
+  "index": "Mbodou Abakar Mahamat · Ingénieur Cloud AWS & DevOps",
+  "404": "Page introuvable · Mbodou Abakar Mahamat"
  },
  "description": "Solutions Architect certifié AWS à Jersey City (NJ). Je construis une infrastructure AWS sécurisée et automatisée avec Terraform, Docker et GitHub Actions. Ouvert aux postes DevOps junior et aux missions freelance.",
  "roles": [
@@ -203,7 +203,7 @@ window.I18N_FR = {
   "t68f4145f": "Message",
   "t6dcd1512": "Envoyer le message",
   "t123ddf58": "Ingénieur Cloud AWS &amp; DevOps · Jersey City, NJ",
-  "tcc0af6ae": "© <span id=\"year\">2026</span> Mahamat Mbodou. Hébergé sur AWS via CloudFront, construit avec Terraform.",
+  "tcc0af6ae": "© <span id=\"year\">2026</span> Mbodou Abakar Mahamat. Hébergé sur AWS via CloudFront, construit avec Terraform.",
   "t157fc042": "Erreur 404",
   "t079f1f87": "Cette page <span class=\"grad-text\">n'existe pas.</span>",
   "tde856661": "Le lien est peut-être ancien ou mal saisi. Tout le contenu de ce site se trouve sur la page d'accueil.",
